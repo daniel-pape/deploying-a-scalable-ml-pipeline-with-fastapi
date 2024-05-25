@@ -26,5 +26,5 @@ jobs:
           pytest .
       - name: Run flake
         run: |
-          flake8 ml
+          flake8 --ignore=E501 ml
           
