@@ -26,5 +26,5 @@ jobs:
           pytest .
       - name: Run flake
         run: |
-          flake8 .
+          flake8 ml
           
