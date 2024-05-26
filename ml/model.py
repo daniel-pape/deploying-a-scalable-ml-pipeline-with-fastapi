@@ -1,11 +1,10 @@
 import pickle  # noqa: F401
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from ml.data import process_data
+from sklearn.dummy import DummyClassifier
+from sklearn.base import BaseEstimator
 
-# TODO: add necessary import
 
-
-# Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
     """
     Trains a machine learning model and returns it.
@@ -21,8 +20,7 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
-    # TODO: implement the function
-    pass
+    return DummyClassifier(strategy="uniform", random_state=42).fit(X_train, y_train)
 
 
 def compute_model_metrics(y, preds):
@@ -52,7 +50,7 @@ def inference(model, X):
 
     Inputs
     ------
-    model : ???
+    model : sklearn.dummy.DummyClassifier
         Trained machine learning model.
     X : np.array
         Data used for prediction.
@@ -61,11 +59,10 @@ def inference(model, X):
     preds : np.array
         Predictions from the model.
     """
-    # TODO: implement the function
-    pass
+    return model.predict(X)
 
 
-def save_model(model, path):
+def save_model(model: BaseEstimator, path):
     """Serializes model to a file.
 
     Inputs
@@ -75,14 +72,18 @@ def save_model(model, path):
     path : str
         Path to save pickle file.
     """
-    # TODO: implement the function
-    pass
+    with open(path, "wb") as f:
+        pickle.dump(model, f, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 def load_model(path):
     """Loads pickle file from `path` and returns it."""
-    # TODO: implement the function
-    pass
+    clf = None
+
+    with open(path, "rb") as f:
+        clf = pickle.load(f)
+
+    return clf
 
 
 def performance_on_categorical_slice(
@@ -111,7 +112,7 @@ def performance_on_categorical_slice(
         Trained sklearn OneHotEncoder, only used if training=False.
     lb : sklearn.preprocessing._label.LabelBinarizer
         Trained sklearn LabelBinarizer, only used if training=False.
-    model : ???
+    model : sklearn.dummy.DummyClassifier
         Model used for the task.
 
     Returns
@@ -121,14 +122,14 @@ def performance_on_categorical_slice(
     fbeta : float
 
     """
-    # TODO: implement the function
     X_slice, y_slice, _, _ = process_data(
-        # your code here
-        # for input data, use data in column given as "column_name", with the slice_value
-        # use training = False
+        X=data[data[column_name] == slice_value],
+        categorical_features=categorical_features,
+        label=label,
+        training=False,
+        encoder=encoder,
+        lb=lb,
     )
-    preds = (
-        ...
-    )  # your code here to get prediction on X_slice using the inference function
+    preds = inference(model, X_slice)
     precision, recall, fbeta = compute_model_metrics(y_slice, preds)
     return precision, recall, fbeta
