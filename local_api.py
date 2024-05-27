@@ -1,16 +1,15 @@
-import json
+import logging
 
 import requests
 
-# TODO: send a GET using the URL http://127.0.0.1:8000
-r = # Your code here
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
+logger = logging.getLogger(__name__)
 
-# TODO: print the status code
-# print()
-# TODO: print the welcome message
-# print()
+logger.info(f"Sending a GET using...")
+r = requests.get("http://127.0.0.1:8000")
 
-
+logger.info(f"Response status code: {r.status_code}")
+logger.info(f"Response text: {r.text}")
 
 data = {
     "age": 37,
@@ -29,10 +28,8 @@ data = {
     "native-country": "United-States",
 }
 
-# TODO: send a POST using the data above
-r = # Your code here
+logger.info(f"Sending a POST using data={data}...")
+r = requests.post("http://127.0.0.1:8000/data/", json=data)
 
-# TODO: print the status code
-# print()
-# TODO: print the result
-# print()
+logger.info(f"Response status code: {r.status_code}")
+logger.info(f"Response text: {r.text}")

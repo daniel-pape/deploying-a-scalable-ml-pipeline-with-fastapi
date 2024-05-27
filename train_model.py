@@ -1,13 +1,11 @@
 import os
-import sys
 
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
 from sklearn.model_selection import train_test_split
-from pathlib import Path
 
-from config import project_path
+from config import project_path, model_path, encoder_path
 from ml.data import process_data
 from ml.model import (
     compute_model_metrics,
@@ -72,9 +70,7 @@ np.save(os.path.join(project_path, "data", "y_test.npy"), y_test)
 model = train_model(X_train, y_train)
 
 # save the model and the encoder
-model_path = os.path.join(project_path, "model", "model.pkl")
 save_model(model, model_path)
-encoder_path = os.path.join(project_path, "model", "encoder.pkl")
 save_model(encoder, encoder_path)
 
 # load the model
