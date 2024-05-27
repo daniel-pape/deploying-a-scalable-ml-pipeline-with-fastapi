@@ -1,29 +1,26 @@
-from pathlib import Path
-
-import pytest
 import os
-import pandas as pd
+
 import numpy as np
-from config import project_path
-from ml.model import load_model, inference, compute_model_metrics
-from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingClassifier
 
-from train_model import get_census_data, get_train_test_sets
+from config import project_path
+from ml.model import load_model, inference, compute_model_metrics, train_model
 
 
 # TODO: add necessary import
 
 
 # TODO: implement the first test. Change the function name and input as needed
-def test_pickeled_model_loads():
+def test_trained_model_type():
     """
     # add description for the first test
     """
-    model_path = os.path.join(project_path, "model", "model.pkl")
-    model = load_model(model_path)
+    X_test = np.load(os.path.join(project_path, "data", "X_test.npy"))
+    y_test = np.load(os.path.join(project_path, "data", "y_test.npy"))
+    model = train_model(X_test, y_test)
 
-    assert model
+    assert isinstance(model, GradientBoostingClassifier)
+    assert model.random_state == 42
 
 
 def test_loaded_model_type():
