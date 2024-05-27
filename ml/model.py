@@ -1,9 +1,8 @@
 import pickle  # noqa: F401
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from ml.data import process_data
-from sklearn.dummy import DummyClassifier
 from sklearn.base import BaseEstimator
-
+from sklearn.ensemble import GradientBoostingClassifier
 
 def train_model(X_train, y_train):
     """
@@ -20,7 +19,7 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
-    return DummyClassifier(strategy="uniform", random_state=42).fit(X_train, y_train)
+    return GradientBoostingClassifier(random_state=42).fit(X_train, y_train)
 
 
 def compute_model_metrics(y, preds):
@@ -50,7 +49,7 @@ def inference(model, X):
 
     Inputs
     ------
-    model : sklearn.dummy.DummyClassifier
+    model : sklearn.ensemble.GradientBoostingClassifier
         Trained machine learning model.
     X : np.array
         Data used for prediction.
@@ -112,7 +111,7 @@ def performance_on_categorical_slice(
         Trained sklearn OneHotEncoder, only used if training=False.
     lb : sklearn.preprocessing._label.LabelBinarizer
         Trained sklearn LabelBinarizer, only used if training=False.
-    model : sklearn.dummy.DummyClassifier
+    model : sklearn.ensemble.GradientBoostingClassifier
         Model used for the task.
 
     Returns
