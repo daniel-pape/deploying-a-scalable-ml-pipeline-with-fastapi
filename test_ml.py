@@ -7,6 +7,7 @@ import numpy as np
 from config import project_path
 from ml.model import load_model, inference, compute_model_metrics
 from sklearn.model_selection import train_test_split
+from sklearn.ensemble import GradientBoostingClassifier
 
 from train_model import get_census_data, get_train_test_sets
 
@@ -15,21 +16,26 @@ from train_model import get_census_data, get_train_test_sets
 
 
 # TODO: implement the first test. Change the function name and input as needed
-def test_one():
+def test_pickeled_model_loads():
     """
     # add description for the first test
     """
-    # Your code here
-    pass
+    model_path = os.path.join(project_path, "model", "model.pkl")
+    model = load_model(model_path)
+
+    assert model
 
 
-# TODO: implement the second test. Change the function name and input as needed
-def test_two():
+def test_loaded_model_type():
     """
-    # add description for the second test
+    Test that the loaded model is a GB classifier
+    with the expected random_state.
     """
-    # Your code here
-    pass
+    model_path = os.path.join(project_path, "model", "model.pkl")
+    model = load_model(model_path)
+
+    assert isinstance(model, GradientBoostingClassifier)
+    assert model.random_state == 42
 
 
 def test_compute_model_metrics():
