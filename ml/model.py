@@ -4,6 +4,7 @@ from ml.data import process_data
 from sklearn.base import BaseEstimator
 from sklearn.ensemble import GradientBoostingClassifier
 
+
 def train_model(X_train, y_train):
     """
     Trains a machine learning model and returns it.
