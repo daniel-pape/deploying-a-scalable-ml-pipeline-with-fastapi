@@ -1,11 +1,14 @@
 import pickle  # noqa: F401
+import numpy as np
+from typing import Tuple
+
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from ml.data import process_data
 from sklearn.base import BaseEstimator
 from sklearn.ensemble import GradientBoostingClassifier
 
 
-def train_model(X_train, y_train):
+def train_model(X_train, y_train) -> object:
     """
     Trains a machine learning model and returns it.
 
@@ -23,7 +26,7 @@ def train_model(X_train, y_train):
     return GradientBoostingClassifier(random_state=42).fit(X_train, y_train)
 
 
-def compute_model_metrics(y, preds):
+def compute_model_metrics(y, preds) -> Tuple[float, float, float]:
     """
     Validates the trained machine learning model using precision, recall, and F1.
 
@@ -45,7 +48,7 @@ def compute_model_metrics(y, preds):
     return precision, recall, fbeta
 
 
-def inference(model, X):
+def inference(model, X) -> np.array:
     """Run model inferences and return the predictions.
 
     Inputs
@@ -62,7 +65,7 @@ def inference(model, X):
     return model.predict(X)
 
 
-def save_model(model: BaseEstimator, path):
+def save_model(model: BaseEstimator, path) -> None:
     """Serializes model to a file.
 
     Inputs
@@ -76,10 +79,8 @@ def save_model(model: BaseEstimator, path):
         pickle.dump(model, f, protocol=pickle.HIGHEST_PROTOCOL)
 
 
-def load_model(path):
+def load_model(path) -> object:
     """Loads pickle file from `path` and returns it."""
-    clf = None
-
     with open(path, "rb") as f:
         clf = pickle.load(f)
 
@@ -88,7 +89,7 @@ def load_model(path):
 
 def performance_on_categorical_slice(
     data, column_name, slice_value, categorical_features, label, encoder, lb, model
-):
+) -> Tuple[float, float, float]:
     """Computes the model metrics on a slice of the data specified by a column name and
 
     Processes the data using one hot encoding for the categorical features and a

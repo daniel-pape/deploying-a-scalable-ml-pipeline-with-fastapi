@@ -1,10 +1,13 @@
 import os
 import sys
 
+import numpy as np
 import pandas as pd
+from pandas import DataFrame
 from sklearn.model_selection import train_test_split
 from pathlib import Path
 
+from config import project_path
 from ml.data import process_data
 from ml.model import (
     compute_model_metrics,
@@ -15,13 +18,23 @@ from ml.model import (
     train_model,
 )
 
-project_path = Path(__file__).parent
 
-data_path = os.path.join(project_path, "data", "census.csv")
-print(f"Path to the census data: {data_path}'")
-data = pd.read_csv(data_path, header=0)
+def get_census_data() -> DataFrame:
+    data_path = os.path.join(project_path, "data", "census.csv")
+    print(f"Path to the census data: {data_path}'")
+    data: DataFrame = pd.read_csv(data_path, header=0)
 
-train, test = train_test_split(data, test_size=0.2, random_state=42)
+    return data
+
+
+def get_train_test_sets(data: DataFrame):
+    train, test = train_test_split(data, test_size=0.2, random_state=42)
+
+    return train, test
+
+
+data = get_census_data()
+train, test = get_train_test_sets(data)
 
 # DO NOT MODIFY
 cat_features = [
@@ -52,6 +65,9 @@ X_test, y_test, _, _ = process_data(
     encoder=encoder,
     lb=lb,
 )
+
+np.save(os.path.join(project_path, "data", "X_test.npy"), X_test)
+np.save(os.path.join(project_path, "data", "y_test.npy"), y_test)
 
 model = train_model(X_train, y_train)
 
