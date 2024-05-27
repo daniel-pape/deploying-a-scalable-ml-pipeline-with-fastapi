@@ -7,10 +7,6 @@ from config import project_path
 from ml.model import load_model, inference, compute_model_metrics, train_model
 
 
-# TODO: add necessary import
-
-
-# TODO: implement the first test. Change the function name and input as needed
 def test_trained_model_type():
     """
     # add description for the first test
